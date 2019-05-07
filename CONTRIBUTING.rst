@@ -15,7 +15,7 @@ Types of Contributions
 Report Bugs
 ~~~~~~~~~~~
 
-Report bugs at https://github.com/HDI-Project/BTB/issues.
+Report bugs at the `GitHub Issues page`_.
 
 If you are reporting a bug, please include:
 
@@ -45,7 +45,7 @@ articles, and such.
 Submit Feedback
 ~~~~~~~~~~~~~~~
 
-The best way to send feedback is to file an issue at https://github.com/HDI-Project/BTB/issues.
+The best way to send feedback is to file an issue at the `GitHub Issues page`_.
 
 If you are proposing a feature:
 
@@ -75,27 +75,32 @@ Ready to contribute? Here's how to set up `BTB` for local development.
 
     $ git checkout -b name-of-your-bugfix-or-feature
 
+   Try to use the naming scheme of prefixing your branch with ``gh-X`` where X is
+   the associated issue, such as ``gh-3-fix-foo-bug``. And if you are not
+   developing on your own fork, further prefix the branch with your GitHub
+   username, like ``githubusername/gh-3-fix-foo-bug``.
+
    Now you can make your changes locally.
 
 5. While hacking your changes, make sure to cover all your developments with the required
    unit tests, and that none of the old tests fail as a consequence of your changes.
    For this, make sure to run the tests suite and check the code coverage::
 
+    $ make lint       # Check code styling
     $ make test       # Run the tests
     $ make coverage   # Get the coverage report
 
-6. When you're done making changes, check that your changes pass flake8 and the
-   tests, including testing other Python versions with tox::
+6. When you're done making changes, check that your changes pass all the styling checks and
+   tests, including other Python supported versions, using::
 
-    $ make lint       # Check code styling
-    $ make test-all   # Execute tests on all python versions
+    $ make test-all
 
 7. Make also sure to include the necessary documentation in the code as docstrings following
-   the `google docstring`_ style.
+   the `Google docstring`_ style.
    If you want to view how your documentation will look like when it is published, you can
    generate and view the docs with this command::
 
-    $ make viewdocs
+    $ make view-docs
 
 8. Commit your changes and push your branch to GitHub::
 
@@ -104,8 +109,6 @@ Ready to contribute? Here's how to set up `BTB` for local development.
     $ git push origin name-of-your-bugfix-or-feature
 
 9. Submit a pull request through the GitHub website.
-
-.. _google docstring: https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
 
 Pull Request Guidelines
 -----------------------
@@ -116,13 +119,12 @@ Before you submit a pull request, check that it meets these guidelines:
    the comment. If there is no associated issue, feel free to create one.
 2. Whenever possible, it resolves only **one** issue. If your PR resolves more than
    one issue, try to split it in more than one pull request.
-3. The pull request should include unit tests that cover all the changed code
+3. The pull request should include unit tests that cover all the changed code.
 4. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
-   feature to the list in README.rst.
-5. The pull request should work for Python 2.7, 3.4, 3.5, 3.6, and 3.7. Check
-   https://travis-ci.org/HDI-Project/BTB/pull_requests
-   and make sure that all the checks pass.
+   feature to the documentation in an appropriate place.
+5. The pull request should work for all the supported Python versions. Check the `Travis Build
+   Status page`_ and make sure that all the checks pass.
 
 Unit Testing Guidelines
 -----------------------
@@ -162,7 +164,8 @@ Tips
 
 To run a subset of tests::
 
-    $ pytest tests.test_btb
+    $ python -m pytest tests.btb
+    $ python -m pytest -k 'foo'
 
 Release Workflow
 ----------------
@@ -195,3 +198,7 @@ Once this is done, run of the following commands:
 3. If you are releasing a major version::
 
     make release-major
+
+.. _GitHub issues page: https://github.com/HDI-Project/BTB/issues
+.. _Travis Build Status page: https://travis-ci.org/HDI-Project/BTB/pull_requests
+.. _Google docstrings style: https://google.github.io/styleguide/pyguide.html?showone=Comments#Comments

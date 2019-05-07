@@ -49,6 +49,7 @@ clean-pyc: ## remove Python file artifacts
 
 .PHONY: clean-docs
 clean-docs: ## remove previously built docs
+	rm -f docs/api/*.rst
 	-$(MAKE) -C docs clean 2>/dev/null  # this fails if sphinx is not yet installed
 
 .PHONY: clean-coverage
@@ -85,8 +86,8 @@ install-develop: clean-build clean-pyc ## install the package in editable mode a
 
 .PHONY: lint
 lint: ## check style with flake8 and isort
-	flake8 btb tests examples
-	isort -c --recursive btb tests examples
+	flake8 btb tests
+	isort -c --recursive btb tests
 
 .PHONY: fix-lint
 fix-lint: ## fix lint issues using autoflake, autopep8, and isort
@@ -121,6 +122,7 @@ coverage: ## check code coverage quickly with the default Python
 
 .PHONY: docs
 docs: clean-docs ## generate Sphinx HTML documentation, including API docs
+	sphinx-apidoc --module-first --separate -T -o docs/api/ btb
 	$(MAKE) -C docs html
 
 .PHONY: view-docs

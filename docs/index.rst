@@ -5,10 +5,6 @@
    :maxdepth: 2
 
    readme
-   tuners
-   selectors
-   recommenders
-   api_reference
    contributing
    authors
    history
