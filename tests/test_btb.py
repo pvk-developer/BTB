@@ -22,4 +22,3 @@ class TestBTB(unittest.TestCase):
     def test_000_something(self):
         """Test something."""
         self.assertTrue(True)
-

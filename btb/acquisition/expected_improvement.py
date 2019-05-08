@@ -1,16 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from abc import ABCMeta, abstractmethod
-
 import numpy as np
 from scipy.stats import norm
 
-
-class AcquisitionFunctionMixin(metaclass=ABCMeta):
-
-    @abstractmethod
-    def _acquire(self, predictions, n_candidates):
-        pass
+from btb.acquisition import AcquisitionFunctionMixin
 
 
 class ExpectedImprovementAcquisitionFunction(AcquisitionFunctionMixin):
@@ -27,4 +20,5 @@ class ExpectedImprovementAcquisitionFunction(AcquisitionFunctionMixin):
         z = (mu - y_best) / sigma
         ei = sigma * (z * Phi(z) + N(z))
         candidate = np.argmax(ei)
+
         return [candidate]

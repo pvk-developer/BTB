@@ -3,10 +3,13 @@ Credits
 
 Contributors
 ------------
-
-* Laura Gustafson <lgustaf@mit.edu>
-* Bennett Cyphers <bennettcyphers@gmail.com>
 * Carles Sala <csala@csail.mit.edu>
 * Micah Smith <micahs@mit.edu>
-* Alfredo Cuesta-Infante <alfredo.cuesta@urjc.es>
+* Laura Gustafson <lgustaf@mit.edu>
+* Bennett Cyphers <bennettcyphers@gmail.com>
 * Kalyan Veeramachaneni <kalyan@csail.mit.edu>
+* Alfredo Cuesta-Infante <alfredo.cuesta@urjc.es>
+* Plamen Valentinov <plamen@pythiac.com>
+* Sze Nga Wong <wsnalice@mit.edu>
+
+
