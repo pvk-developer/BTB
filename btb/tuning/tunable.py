@@ -3,6 +3,10 @@
 import numpy as np
 import pandas as pd
 
+from btb.tuning.hyperparams.boolean import BooleanHyperParam
+from btb.tuning.hyperparams.categorical import CategoricalHyperParam
+from btb.tuning.hyperparams.numerical import FloatHyperParam, IntHyperParam
+
 """Package where the Tunable class is defined."""
 
 
@@ -29,6 +33,7 @@ class Tunable:
         self.names = list(hyperparams)
         self.dimensions = 0
         self.cardinality = 1
+        self.returned_default = False
 
         for hyperparam in hyperparams.values():
             self.dimensions = self.dimensions + hyperparam.dimensions
@@ -186,10 +191,53 @@ class Tunable:
             array([[0.  , 1.  , 0.  , 0.45],
                    [1.  , 0.  , 1.  , 0.95]])
         """
-        samples = list()
+        samples = []
 
-        for name, hyperparam in self.hyperparams.items():
+        for hyperparam in self.hyperparams.values():
             items = hyperparam.sample(n_samples)
+
+            if not self.returned_default:
+                default = hyperparam.transform(hyperparam.default)
+                items = np.append(default, items[:-1], axis=0)
+
             samples.append(items)
 
+        if not self.returned_default:
+            self.returned_default = True
+
         return np.concatenate(samples, axis=1)
+
+    @classmethod
+    def from_dict(cls, dict_hyperparams):
+
+        if not isinstance(dict_hyperparams, dict):
+            raise TypeError('Hyperparams must be a dictionary.')
+
+        hyperparams = {}
+
+        for name, hyperparam in dict_hyperparams.items():
+            hp_type = hyperparam['type']
+            hp_default = hyperparam.get('default')
+
+            if hp_type == 'int':
+                hp_range = hyperparam.get('range') or hyperparam.get('values')
+                hp_min = min(hp_range) if hp_range else None
+                hp_max = max(hp_range) if hp_range else None
+                hp_instance = IntHyperParam(min=hp_min, max=hp_max, default=hp_default)
+
+            elif hp_type == 'float':
+                hp_range = hyperparam.get('range') or hyperparam.get('values')
+                hp_min = min(hp_range)
+                hp_max = max(hp_range)
+                hp_instance = FloatHyperParam(min=hp_min, max=hp_max, default=hp_default)
+
+            elif hp_type == 'bool':
+                hp_instance = BooleanHyperParam(default=hp_default)
+
+            elif hp_type == 'str':
+                hp_choices = hyperparam.get('range') or hyperparam.get('values')
+                hp_instance = CategoricalHyperParam(choices=hp_choices, default=hp_default)
+
+            hyperparams[name] = hp_instance
+
+        return cls(hyperparams)
