@@ -110,7 +110,16 @@ def _get_challenges(args):
 def perform_benchmark(args):
     candidates = _get_candidates(args)
     challenges = list(_get_challenges(args))
-    results = benchmark(candidates, challenges, args.iterations, args.complete_dataframe)
+    try:
+        if args.kubernetes_config:
+            from .setup_kubernetes import setup_kubernetes
+            client = setup_kubernetes(args.kubernetes_config)
+
+        results = benchmark(candidates, challenges, args.iterations, args.complete_dataframe)
+
+    finally:
+        if client:
+            client.close()
 
     if args.report is None:
         base_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'results')
@@ -147,6 +156,8 @@ def _get_parser():
                         choices=['math', 'random_forest'])
     parser.add_argument('-c', '--complete-dataframe', action='store_true',
                         help='Return the complete dataframe with additional information.')
+    parser.add_argument('-k', '--kubernetes-config',
+                        help='Kubernetes yalm config file. If provided will run on Kubernetes.')
 
     return parser
 

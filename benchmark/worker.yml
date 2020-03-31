@@ -1,0 +1,21 @@
+kind: Pod
+metadata:
+  labels:
+    name: btb-dask-worker
+spec:
+  restartPolicy: Never
+  containers:
+  - image: daskdev/dask:latest
+    imagePullPolicy: IfNotPresent
+    # args: [dask-worker, --nthreads, '2', --no-bokeh, --memory-limit, 2GB, --death-timeout, '60']
+    name: dask
+    env:
+      - name: EXTRA_PIP_PACKAGES
+        value: git+https://github.com/dask/distributed
+    resources:
+      limits:
+        cpu: 2
+        memory: 4G
+      requests:
+        cpu: 2
+        memory: 2G
