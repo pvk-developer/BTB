@@ -11,7 +11,9 @@ spec:
     name: dask
     env:
       - name: EXTRA_PIP_PACKAGES
-        value: git+https://github.com/dask/distributed
+        value:
+         - git+https://github.com/dask/distributed
+         - git+https://github.com/pvk-developer/BTB.git@kubernetes_benchmark
     resources:
       limits:
         cpu: 2
