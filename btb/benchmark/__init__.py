@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
+import socket
 from datetime import datetime
 
 import dask
@@ -22,7 +23,8 @@ def _evaluate_tuner(name, tuner, challenge, iterations):
             'challenge': str(challenge),
             'tuner': name,
             'score': score,
-            'elapsed': datetime.utcnow() - start
+            'elapsed': datetime.utcnow() - start,
+            'host': socket.gethostname()
         }
 
     except Exception as ex:
