@@ -4,7 +4,10 @@ import os
 import random
 import warnings
 
+import boto3
 import tabulate
+from botocore import UNSIGNED
+from botocore.client import Config
 
 import btb
 from btb.benchmark import benchmark
@@ -118,7 +121,7 @@ def perform_benchmark(args):
         results = benchmark(candidates, challenges, args.iterations, args.complete_dataframe)
 
     finally:
-        if client:
+        if args.kubernetes_config and client:
             client.close()
 
     if args.report is None:
@@ -137,6 +140,11 @@ def perform_benchmark(args):
     ))
 
     results.to_csv(args.report)
+
+    # Upload to s3
+    if args.push:
+        s3_client = boto3.client('s3', config=Config(signature_version=UNSIGNED))
+        s3_client.upload_file(args.report, 'pvkbucket', os.path.basename(args.report))
 
 
 def _get_parser():
@@ -158,6 +166,8 @@ def _get_parser():
                         help='Return the complete dataframe with additional information.')
     parser.add_argument('-k', '--kubernetes-config',
                         help='Kubernetes yalm config file. If provided will run on Kubernetes.')
+    parser.add_argument('-p', '--push', action='store_true',
+                        help='Upload the obtained result to s3.')
 
     return parser
 
