@@ -11,6 +11,11 @@ matrix:
       dist: xenial
       sudo: required
 
+# XGBOOST required package
+before_install:
+    - sudo apt-get update
+    - sudo apt-get -y install libaio1
+
 # Command to install dependencies
 install: pip install -U tox-travis codecov
 
