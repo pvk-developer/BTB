@@ -14,7 +14,7 @@ matrix:
 # XGBOOST required package
 before_install:
     - sudo apt-get update
-    - sudo apt-get -y install libgomp1
+    - sudo apt-get -y install libgomp1 libgomp.so
 
 # Command to install dependencies
 install: pip install -U tox-travis codecov
